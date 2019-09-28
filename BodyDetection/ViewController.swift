@@ -1,9 +1,9 @@
 /*
-See LICENSE folder for this sample’s licensing information.
-
-Abstract:
-The sample app's main view controller.
-*/
+ See LICENSE folder for this sample’s licensing information.
+ 
+ Abstract:
+ The sample app's main view controller.
+ */
 
 import UIKit
 import RealityKit
@@ -11,9 +11,10 @@ import ARKit
 import Combine
 
 class ViewController: UIViewController, ARSessionDelegate {
-
+    
     @IBOutlet var arView: ARView!
     @IBOutlet weak var messageLabel: MessageLabel!
+    @IBOutlet weak var restore: UIButton!
     
     // The 3D character to display.
     var character: BodyTrackedEntity?
@@ -31,13 +32,14 @@ class ViewController: UIViewController, ARSessionDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         arView.session.delegate = self
+        arView.addSubview(restore)
         
         // If the iOS device doesn't support body tracking, raise a developer error for
         // this unhandled case.
         guard ARBodyTrackingConfiguration.isSupported else {
             fatalError("This feature is only supported on devices with an A12 chip")
         }
-
+        
         // Run a body tracking configration.
         let configuration = ARBodyTrackingConfiguration()
         arView.session.run(configuration)
@@ -83,5 +85,13 @@ class ViewController: UIViewController, ARSessionDelegate {
             }
         }
         saveCharacter = characterAnchor
+    }
+    
+    // 保存されたポーズを再現する
+    @IBAction func doRestore(_ sender: UIButton) {
+        let userDefault = UserDefaults.standard
+        let motion = userDefault.array(forKey: "motion")
+        // 取得したアンカーをsceneに追加すれば再現できる想定
+        // arView.scene.addAnchor(characterAnchor)
     }
 }
