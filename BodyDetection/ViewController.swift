@@ -19,6 +19,9 @@ class ViewController: UIViewController, ARSessionDelegate {
     var character: BodyTrackedEntity?
     let characterOffset: SIMD3<Float> = [-1.0, 0, 0] // Offset the character by one meter to the left
     let characterAnchor = AnchorEntity()
+    var userDefaults = UserDefaults.standard
+    
+    var saveCharacter = AnchorEntity()
     
     // A tracked raycast which is used to place the character accurately
     // in the scene wherever the user taps.
@@ -40,7 +43,7 @@ class ViewController: UIViewController, ARSessionDelegate {
         arView.session.run(configuration)
         
         arView.scene.addAnchor(characterAnchor)
-        
+
         // Asynchronously load the 3D character.
         var cancellable: AnyCancellable? = nil
         cancellable = Entity.loadBodyTrackedAsync(named: "character/robot").sink(
@@ -71,7 +74,7 @@ class ViewController: UIViewController, ARSessionDelegate {
             // Also copy over the rotation of the body anchor, because the skeleton's pose
             // in the world is relative to the body anchor's rotation.
             characterAnchor.orientation = Transform(matrix: bodyAnchor.transform).rotation
-   
+            
             if let character = character, character.parent == nil {
                 // Attach the character to its anchor as soon as
                 // 1. the body anchor was detected and
@@ -79,5 +82,6 @@ class ViewController: UIViewController, ARSessionDelegate {
                 characterAnchor.addChild(character)
             }
         }
+        saveCharacter = characterAnchor
     }
 }
