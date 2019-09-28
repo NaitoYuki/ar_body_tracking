@@ -84,14 +84,15 @@ class ViewController: UIViewController, ARSessionDelegate {
                 characterAnchor.addChild(character)
             }
         }
-        saveCharacter = characterAnchor
+        saveCharacter = characterAnchor.clone(recursive: true)
+        
     }
     
     // 保存されたポーズを再現する
     @IBAction func doRestore(_ sender: UIButton) {
-        let userDefault = UserDefaults.standard
-        let motion = userDefault.array(forKey: "motion")
+        let motion = saveCharacter
         // 取得したアンカーをsceneに追加すれば再現できる想定
-        // arView.scene.addAnchor(characterAnchor)
+        print(motion)
+        arView.scene.addAnchor(motion)
     }
 }
