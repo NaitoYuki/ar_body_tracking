@@ -1,9 +1,9 @@
 /*
-See LICENSE folder for this sample’s licensing information.
-
-Abstract:
-The sample app's main view controller.
-*/
+ See LICENSE folder for this sample’s licensing information.
+ 
+ Abstract:
+ The sample app's main view controller.
+ */
 
 import UIKit
 import RealityKit
@@ -11,7 +11,7 @@ import ARKit
 import Combine
 
 class ViewController: UIViewController, ARSessionDelegate {
-
+    
     @IBOutlet var arView: ARView!
     @IBOutlet weak var messageLabel: MessageLabel!
     @IBOutlet weak var restore: UIButton!
@@ -36,7 +36,7 @@ class ViewController: UIViewController, ARSessionDelegate {
         guard ARBodyTrackingConfiguration.isSupported else {
             fatalError("This feature is only supported on devices with an A12 chip")
         }
-
+        
         // Run a body tracking configration.
         let configuration = ARBodyTrackingConfiguration()
         arView.session.run(configuration)
@@ -73,7 +73,7 @@ class ViewController: UIViewController, ARSessionDelegate {
             // Also copy over the rotation of the body anchor, because the skeleton's pose
             // in the world is relative to the body anchor's rotation.
             characterAnchor.orientation = Transform(matrix: bodyAnchor.transform).rotation
-   
+            
             if let character = character, character.parent == nil {
                 // Attach the character to its anchor as soon as
                 // 1. the body anchor was detected and
@@ -85,5 +85,9 @@ class ViewController: UIViewController, ARSessionDelegate {
     
     // 保存されたポーズを再現する
     @IBAction func doRestore(_ sender: UIButton) {
+        let userDefault = UserDefaults.standard
+        let motion = userDefault.array(forKey: "motion")
+        // 取得したアンカーをsceneに追加すれば再現できる想定
+        // arView.scene.addAnchor(characterAnchor)
     }
 }
