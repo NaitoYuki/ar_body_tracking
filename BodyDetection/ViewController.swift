@@ -14,6 +14,7 @@ class ViewController: UIViewController, ARSessionDelegate {
 
     @IBOutlet var arView: ARView!
     @IBOutlet weak var messageLabel: MessageLabel!
+    @IBOutlet weak var restore: UIButton!
     
     // The 3D character to display.
     var character: BodyTrackedEntity?
@@ -28,6 +29,7 @@ class ViewController: UIViewController, ARSessionDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         arView.session.delegate = self
+        arView.addSubview(restore)
         
         // If the iOS device doesn't support body tracking, raise a developer error for
         // this unhandled case.
@@ -79,5 +81,9 @@ class ViewController: UIViewController, ARSessionDelegate {
                 characterAnchor.addChild(character)
             }
         }
+    }
+    
+    // 保存されたポーズを再現する
+    @IBAction func doRestore(_ sender: UIButton) {
     }
 }
